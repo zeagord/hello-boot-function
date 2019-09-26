@@ -2,14 +2,10 @@ package com.example.helloworld;
 
 import com.example.helloworld.HelloServiceGrpc.HelloServiceImplBase;
 import io.grpc.stub.StreamObserver;
+import org.springframework.stereotype.Service;
 
-public class HelloServiceImpl extends HelloServiceImplBase  {
-  @Override
-  public void hello(Hello.HelloRequest request, StreamObserver<Hello.HelloReply> responseObserver) {
-    responseObserver.onNext(buildReply(toMessage(request.getName())));
-    responseObserver.onCompleted();
-  }
-
+@Service
+public class HelloServiceImpl extends HelloServiceImplBase {
   static String toMessage(String name) {
     return "Hello, " + name + '!';
   }
@@ -18,4 +14,9 @@ public class HelloServiceImpl extends HelloServiceImplBase  {
     return Hello.HelloReply.newBuilder().setMessage(String.valueOf(message)).build();
   }
 
+  @Override
+  public void hello(Hello.HelloRequest request, StreamObserver<Hello.HelloReply> responseObserver) {
+    responseObserver.onNext(buildReply(toMessage(request.getName())));
+    responseObserver.onCompleted();
+  }
 }
